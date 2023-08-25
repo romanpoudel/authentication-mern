@@ -1,9 +1,9 @@
 import express from "express";
 
-const router = express.Router();
+const loginRouter = express.Router();
 
-router.get("/", (req, res) => {
+loginRouter.get("/", (req, res) => {
     res.send("Roman");
 });
 
-export default router
+export default loginRouter
