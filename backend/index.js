@@ -1,4 +1,4 @@
-import express from "express";
+import express, { urlencoded } from "express";
 import loginRouter from "./routes/login.route.js";
 import signupRouter from "./routes/signup.route.js";
 import mongoose from "mongoose";
