@@ -5,11 +5,15 @@ import bcrypt from "bcrypt";
 const loginRouter = express.Router();
 
 loginRouter.post("/", async (req, res) => {
-    const { email, password } = req.body;
+    const { emailOrUsername, password } = req.body;
 
     try {
-        const user = await authModel.findOne({ email: email });
-        console.log(user)
+        const user = await authModel.findOne({
+            $or: [
+                { email: emailOrUsername },
+                { userName: emailOrUsername }
+            ]
+        });
 
         if (!user) {
             return res.status(401).json({ message: "Invalid credentials" });
