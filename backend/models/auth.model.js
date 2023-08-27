@@ -1,11 +1,15 @@
 import mongoose from "mongoose";
 
-const authSchema = new mongoose.Schema({
+const userSchema = new mongoose.Schema({
   email: String,
   userName: String,
-  password:String
+  password:String,
+  token:{
+    type:String,
+    default:null
+  }
 });
 
-const authModel = mongoose.model("auth", authSchema);
+const userModel = mongoose.model("users", userSchema);
 
-export default authModel;
+export default userModel;
