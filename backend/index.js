@@ -7,6 +7,7 @@ import "dotenv/config";
 import loginModel from "./models/auth.model.js";
 import cookieParser from "cookie-parser";
 import auth from "./middlewares/auth.js";
+import cors from "cors";
 
 const app = express();
 
@@ -15,6 +16,7 @@ app.get("/", (req, res) => {
 });
 app.use(express.json());
 app.use(cookieParser());
+app.use(cors())
 
 app.use("/login", loginRouter);
 app.use("/logout", logoutRouter);
