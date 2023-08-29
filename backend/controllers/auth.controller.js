@@ -10,7 +10,6 @@ export default class AuthController {
 		if(!email || !userName || !password || !confirmPassword){
 			return res.status(400).json("Incorrect form submission.")
 		}
-		console.log("sent",req.body.email)
 		if (!validator.isEmail(email)) {
 			return res
 				.status(400)
