@@ -20,7 +20,7 @@ function App() {
           <Route path="/" element={<ProtectedRoute isAuthenticated={isAuthenticated} ><Home /></ProtectedRoute>} /> */}
             
 					<Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
+          <Route path="/signup" element={<Signup/>} />
           <Route path="/home" element={<Home />} />
           <Route path="*" element={<p>Error page</p>} />
 				</Routes>

@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link,useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -19,25 +19,35 @@ const Signup = () => {
 		register,
 		handleSubmit,
 		formState: { errors },
+		setError,
 		reset,
 	} = useForm({ resolver: yupResolver(schema) });
+
+	const navigate=useNavigate();
+
 	const handleNewUser = async (data) => {
-		// e.preventDefault()
-		console.log("Successfully registered new user.", data);
 		const requestOptions = {
-			method: "POST",
+			method:"POST",
+			url:"/signup",
 			headers: {
 				"Content-Type": "application/json",
 			},
-			body: JSON.stringify(data),
+			data
 		};
-		try{
-			const response = await api("/signup", requestOptions);
-			console.log(response);
+		
+		try {
+			const response = await api( requestOptions);
+			console.log(response.data);
+			console.log(response.status);
+			console.log("Successfully registered new user.", data);
 			reset();
-		}
-		catch(err){
-			console.log(err)
+			navigate("/home")
+		} catch (err) {
+			console.log(err.response.data);
+			setError('email', {
+				type: 'manual',
+				message: err.response.data.error,
+			});
 		}
 	};
 	return (
