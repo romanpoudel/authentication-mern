@@ -7,6 +7,10 @@ import "dotenv/config";
 export default class AuthController {
 	async registerUser(req, res) {
 		const { email, userName, password, confirmPassword } = req.body;
+		if(!email || !userName || !password || !confirmPassword){
+			return res.status(400).json("Incorrect form submission.")
+		}
+		console.log("sent",req.body.email)
 		if (!validator.isEmail(email)) {
 			return res
 				.status(400)
@@ -16,7 +20,7 @@ export default class AuthController {
 			const user = await userModel.findOne({ email: email });
 			if (user) {
 				return res
-					.status(400)
+					.status(409)
 					.json({ success: false, error: "User already exists" });
 			}
 			if (password !== confirmPassword) {
@@ -30,7 +34,6 @@ export default class AuthController {
 				userName,
 				password: hashedPassword,
 			});
-
 			const token = jwt.sign(
 				{ id: response._id, email },
 				process.env.JWT_SECRET,
@@ -47,7 +50,7 @@ export default class AuthController {
 
 	async loginController(req, res) {
 		const { email, password } = req.body;
-
+		console.log(req.body)
 		try {
 			const user = await userModel.findOne({ email });
 
