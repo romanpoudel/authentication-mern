@@ -1,12 +1,18 @@
 import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Signup from "./pages/Signup";
-import Login from "./pages/Login";
+import Login from "./pages/Login"
 import Home from "./pages/Home";
 import ProtectedRoute from "./ProtectedRoute";
+import { getCookie } from "./utils/cookie";
 
 function App() {
-  const isAuthenticated=false;
+  let isAuthenticated;
+  if (getCookie("token")){
+    isAuthenticated=true
+  }else{
+    isAuthenticated=false
+  }
 	return (
 		<>
 			<Router>
@@ -21,7 +27,7 @@ function App() {
             
 					<Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup/>} />
-          <Route path="/home" element={<Home />} />
+          {/* <Route path="/home" element={<Home />} /> */}
           <Route path="*" element={<p>Error page</p>} />
 				</Routes>
 			</Router>

@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import api from "../api/config.js";
+import { setCookie } from "../utils/cookie.js";
 
 const schema = yup.object().shape({
 	email: yup.string().email().required(),
@@ -40,8 +41,10 @@ const Signup = () => {
 			console.log(response.data);
 			console.log(response.status);
 			console.log("Successfully registered new user.", data);
+			//store token in cookies
+			setCookie("token",response.data.token,2)
 			reset();
-			navigate("/home")
+			navigate("/")
 		} catch (err) {
 			console.log(err.response.data);
 			setError('email', {
