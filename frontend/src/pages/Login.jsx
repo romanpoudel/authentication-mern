@@ -34,9 +34,9 @@ const Login = () => {
 			const response = await api("/login", requestOptions);
 			console.log(response);
 
-			console.log("token",response.data.token)
+			console.log("token", response.data.token);
 			//store token in cookies
-			setCookie("token",response.data.token,2)
+			setCookie("token", response.data.token, 2);
 			navigate("/");
 			reset();
 		} catch (err) {
@@ -57,6 +57,10 @@ const Login = () => {
 				setError(name, { type, message });
 			});
 		}
+	};
+	const handleGoogle = async () => {
+		const response = await api.get("/auth/google",{withCredentials:true});
+		console.log(response);
 	};
 	return (
 		<>
@@ -84,6 +88,9 @@ const Login = () => {
 					Login
 				</button>
 			</form>
+			<button type="button" onClick={handleGoogle} className="w-full">
+				Login With Google
+			</button>
 			<p className="text-sm">
 				Don&apos;t have account? <Link to="/signup">Sign Up</Link>
 			</p>
