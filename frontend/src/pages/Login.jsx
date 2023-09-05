@@ -58,9 +58,8 @@ const Login = () => {
 			});
 		}
 	};
-	const handleGoogle = async () => {
-		const response = await api.get("/auth/google",{withCredentials:true});
-		console.log(response);
+	const handleGoogle = () => {
+		window.open("http://localhost:4000/auth/google","_self")
 	};
 	return (
 		<>

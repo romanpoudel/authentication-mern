@@ -31,10 +31,6 @@ app.use(
 );
 app.use(passport.initialize())
 app.use(passport.session());
-app.get("/", (req, res) => {
-	// res.send("Hello");
-	res.send('<a href="/auth/google">Signup with google</a>');
-});
 app.use(express.json());
 app.use(cookieParser());
 
@@ -56,12 +52,18 @@ const validate=(req,res,next)=>{
 app.get("/profile",validate,(req,res)=>{
 	res.send("Profile")
 })
+
+app.get("/login/success",(req,res)=>{
+	if(req.user){
+		res.status(200).json({success:true,message:"successful",user:req.user})
+	}
+})
 app.get("/logout",(req,res)=>{
 	req.logout((err)=>{
 		if(err) throw error
 		else{
 			req.session.destroy();
-			res.redirect("/");
+			res.redirect("http://localhost:5173");
 		}
 	})
 })
