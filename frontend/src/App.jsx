@@ -5,29 +5,24 @@ import Login from "./pages/Login";
 import Home from "./pages/Home";
 import ProtectedRoute from "./ProtectedRoute";
 import { useEffect, useState } from "react";
-import api from "./api/config";
+import jwt_decode from "jwt-decode";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-const checkAuthentication = async () => {
-  try {
-    const response = await api('/auth', {
-      method: 'GET',
-      credentials: 'include', 
-    });
+  const checkAuthentication = async () => {
+        const token=localStorage.getItem("token");
+        const decoded = jwt_decode(token);
+        console.log(decoded);
+        console.log(Date.now() / 1000);
+        if (decoded.exp < Date.now() / 1000) {
+          console.log("token expired");
+          setIsAuthenticated(false);
+        } else {
+          console.log("token not expired");
+          setIsAuthenticated(true);
+        }
+  };
 
-    if (response.status === 200) {
-      // User is authenticated
-      setIsAuthenticated(true)
-    } else {
-      setIsAuthenticated(false)
-    }
-  } catch (error) {
-    console.error('Error checking authentication:', error);
-
-    setIsAuthenticated(false)
-  }
-};
 useEffect(()=>{
   checkAuthentication()
 },[])

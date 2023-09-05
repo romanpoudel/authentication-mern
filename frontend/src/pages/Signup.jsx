@@ -43,6 +43,7 @@ const Signup = () => {
 			console.log("Successfully registered new user.", data);
 			if (response.data.success) {
 				toast.success("Signup successful");
+				localStorage.setItem("token", response.data.response.token);
 				reset();
 				navigate("/");
 			} else {

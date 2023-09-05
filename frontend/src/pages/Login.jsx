@@ -41,6 +41,7 @@ const Login = () => {
 			// setCookie("token", response.data.token, 2);
 			if (response.data.success) {
 				toast.success("Login Successful");
+				localStorage.setItem("token", response.data.token);
 				navigate("/");
 				reset();
 			} else {

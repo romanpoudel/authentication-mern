@@ -40,11 +40,11 @@ app.use("/logout", logoutRouter);
 app.use("/signup", signupRouter);
 app.use("/auth", googleRouter);
 
-app.get("/auth", auth, (req, res) => {
-	//you can access value req.user set from middleware
-	console.log(req.user);
-	res.status(200).json({message:"authenticated",user:req.user});
-});
+// app.get("/auth", auth, (req, res) => {
+// 	//you can access value req.user set from middleware
+// 	console.log(req.user);
+// 	res.status(200).json({message:"authenticated",user:req.user});
+// });
 
 const validate=(req,res,next)=>{
 	req.user?next():res.sendStatus(401)
