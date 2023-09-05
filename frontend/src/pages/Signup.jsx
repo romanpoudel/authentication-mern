@@ -4,7 +4,6 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import api from "../api/config.js";
 import { toast } from "react-toastify";
-// import { setCookie } from "../utils/cookie.js";
 
 const schema = yup.object().shape({
 	email: yup.string().email().required(),
@@ -42,8 +41,6 @@ const Signup = () => {
 			console.log(response.data);
 			console.log(response.status);
 			console.log("Successfully registered new user.", data);
-			//store token in cookies
-			// setCookie("token",response.data.token,2)
 			if (response.data.success) {
 				toast.success("Signup successful");
 				reset();
