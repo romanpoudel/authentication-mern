@@ -1,9 +1,10 @@
-import { Link,useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import api from "../api/config.js";
-import { setCookie } from "../utils/cookie.js";
+import { toast } from "react-toastify";
+// import { setCookie } from "../utils/cookie.js";
 
 const schema = yup.object().shape({
 	email: yup.string().email().required(),
@@ -24,31 +25,36 @@ const Signup = () => {
 		reset,
 	} = useForm({ resolver: yupResolver(schema) });
 
-	const navigate=useNavigate();
+	const navigate = useNavigate();
 
 	const handleNewUser = async (data) => {
 		const requestOptions = {
-			method:"POST",
-			url:"/signup",
+			method: "POST",
+			url: "/signup",
 			headers: {
 				"Content-Type": "application/json",
 			},
-			data
+			data,
 		};
-		
+
 		try {
-			const response = await api( requestOptions);
+			const response = await api(requestOptions);
 			console.log(response.data);
 			console.log(response.status);
 			console.log("Successfully registered new user.", data);
 			//store token in cookies
-			setCookie("token",response.data.token,2)
-			reset();
-			navigate("/")
+			// setCookie("token",response.data.token,2)
+			if (response.data.success) {
+				toast.success("Signup successful");
+				reset();
+				navigate("/");
+			} else {
+				toast.error("Signup failed");
+			}
 		} catch (err) {
 			console.log(err.response.data);
-			setError('email', {
-				type: 'manual',
+			setError("email", {
+				type: "manual",
 				message: err.response.data.error,
 			});
 		}

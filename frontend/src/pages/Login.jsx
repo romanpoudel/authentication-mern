@@ -3,7 +3,9 @@ import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import api from "../api/config.js";
-import { setCookie } from "../utils/cookie.js";
+import {toast } from "react-toastify";
+
+// import { setCookie } from "../utils/cookie.js";
 
 const schema = yup.object().shape({
 	email: yup.string().email().required(),
@@ -34,11 +36,16 @@ const Login = () => {
 			const response = await api("/login", requestOptions);
 			console.log(response);
 
-			console.log("token", response.data.token);
+			// console.log("token", response.data.token);
 			//store token in cookies
-			setCookie("token", response.data.token, 2);
-			navigate("/");
-			reset();
+			// setCookie("token", response.data.token, 2);
+			if (response.data.success) {
+				toast.success("Login Successful");
+				navigate("/");
+				reset();
+			} else {
+				toast.error("Invalid Credentials");
+			}
 		} catch (err) {
 			console.log(err);
 			const errors = [
@@ -59,7 +66,7 @@ const Login = () => {
 		}
 	};
 	const handleGoogle = () => {
-		window.open("http://localhost:4000/auth/google","_self")
+		window.open("http://localhost:4000/auth/google", "_self");
 	};
 	return (
 		<>

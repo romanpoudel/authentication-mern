@@ -36,7 +36,7 @@ app.use(cookieParser());
 
 
 app.use("/login", loginRouter);
-// app.use("/logout", logoutRouter);
+app.use("/logout", logoutRouter);
 app.use("/signup", signupRouter);
 app.use("/auth", googleRouter);
 
@@ -53,20 +53,20 @@ app.get("/profile",validate,(req,res)=>{
 	res.send("Profile")
 })
 
-app.get("/login/success",(req,res)=>{
-	if(req.user){
-		res.status(200).json({success:true,message:"successful",user:req.user})
-	}
-})
-app.get("/logout",(req,res)=>{
-	req.logout((err)=>{
-		if(err) throw error
-		else{
-			req.session.destroy();
-			res.redirect("http://localhost:5173");
-		}
-	})
-})
+// app.get("/login/success",(req,res)=>{
+// 	if(req.user){
+// 		res.status(200).json({success:true,message:"successful",user:req.user})
+// 	}
+// })
+// app.get("/logout",(req,res)=>{
+// 	req.logout((err)=>{
+// 		if(err) throw error
+// 		else{
+// 			req.session.destroy();
+// 			res.redirect("http://localhost:5173");
+// 		}
+// 	})
+// })
 
 app.listen(4000, async () => {
 	console.log("Server has started");

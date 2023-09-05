@@ -33,6 +33,11 @@ export default class AuthController {
 				userName,
 				password: hashedPassword,
 			});
+			//cookie section
+			const options = {
+				expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
+				httpOnly: true,
+			};
 			const token = jwt.sign(
 				{ id: response._id, email },
 				process.env.JWT_SECRET,
@@ -41,7 +46,7 @@ export default class AuthController {
 			//this sets only for frontend not in db
 			response.token = token;
 			response.password = undefined; //so they dont get access to original password
-			res.status(200).json(response);
+			res.status(200).cookie("token",token,options).json({success: true,response});
 		} catch (err) {
 			res.status(400).json(err);
 		}
