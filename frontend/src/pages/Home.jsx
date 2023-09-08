@@ -12,6 +12,7 @@ const Home = () => {
 			const response = await api("/logout");
 			console.log(response);
 			// deleteCookie("token")
+			localStorage.removeItem("token")
 			toast.success("Logout successful")
 			navigate("/login")
 		}catch(err){
