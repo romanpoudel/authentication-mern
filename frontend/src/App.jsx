@@ -9,41 +9,47 @@ import jwt_decode from "jwt-decode";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
+
   const checkAuthentication = async () => {
-        const token=localStorage.getItem("token");
-        const decoded = jwt_decode(token);
-        console.log(decoded);
-        console.log(Date.now() / 1000);
-        if (decoded.exp < Date.now() / 1000) {
-          console.log("token expired");
-          setIsAuthenticated(false);
-        } else {
-          console.log("token not expired");
-          setIsAuthenticated(true);
-        }
+    const token = localStorage.getItem("token");
+    const decoded = jwt_decode(token);
+    console.log(decoded);
+    console.log(Date.now() / 1000);
+    if (decoded.exp < Date.now() / 1000) {
+      console.log("token expired");
+      setIsAuthenticated(false);
+    } else {
+      console.log("token not expired");
+      setIsAuthenticated(true);
+    }
   };
 
-useEffect(()=>{
-  checkAuthentication()
-},[])
+  useEffect(() => {
+    setIsMounted(true);
+    checkAuthentication();
+    return () => setIsMounted(false);
+  }, []);
 
-    return (
-      <>
-        <Router>
-          <Routes>
-            {/* protected route */}
-            <Route
-              element={<ProtectedRoute isAuthenticated={isAuthenticated} />}
-            >
-              <Route path="/" element={<Home />} />
-            </Route>
-            <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<Signup />} />
-            <Route path="*" element={<p>Error page</p>} />
-          </Routes>
-        </Router>
-      </>
-    );
+  if (!isMounted) {
+    return null;
   }
+
+  return (
+    <>
+      <Router>
+        <Routes>
+          {/* protected route */}
+          <Route element={<ProtectedRoute isAuthenticated={isAuthenticated} />}>
+            <Route path="/" element={<Home />} />
+          </Route>
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="*" element={<p>Error page</p>} />
+        </Routes>
+      </Router>
+    </>
+  );
+}
 
 export default App;
