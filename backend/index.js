@@ -2,6 +2,7 @@ import express, { urlencoded } from "express";
 import loginRouter from "./routes/login.route.js";
 import logoutRouter from "./routes/logout.route.js";
 import signupRouter from "./routes/signup.route.js";
+import refreshRouter from "./routes/refresh.route.js";
 import googleRouter from "./routes/google.route.js";
 import mongoose from "mongoose";
 import "dotenv/config";
@@ -17,8 +18,8 @@ const app = express();
 app.use(
 	cors({
 		origin: "http://localhost:5173",
-		methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-		credentials:true
+		methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+		credentials: true,
 	})
 );
 app.use(
@@ -29,15 +30,15 @@ app.use(
 		cookie: { secure: false },
 	})
 );
-app.use(passport.initialize())
+app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.json());
 app.use(cookieParser());
 
-
 app.use("/login", loginRouter);
 app.use("/logout", logoutRouter);
 app.use("/signup", signupRouter);
+app.use("/refresh", refreshRouter);
 app.use("/auth", googleRouter);
 
 // app.get("/auth", auth, (req, res) => {
@@ -46,27 +47,16 @@ app.use("/auth", googleRouter);
 // 	res.status(200).json({message:"authenticated",user:req.user});
 // });
 
-const validate=(req,res,next)=>{
-	req.user?next():res.sendStatus(401)
-}
-app.get("/profile",validate,(req,res)=>{
-	res.send("Profile")
-})
+const validate = (req, res, next) => {
+	req.user ? next() : res.sendStatus(401);
+};
+app.get("/profile", validate, (req, res) => {
+	res.send("Profile");
+});
 
-// app.get("/login/success",(req,res)=>{
-// 	if(req.user){
-// 		res.status(200).json({success:true,message:"successful",user:req.user})
-// 	}
-// })
-// app.get("/logout",(req,res)=>{
-// 	req.logout((err)=>{
-// 		if(err) throw error
-// 		else{
-// 			req.session.destroy();
-// 			res.redirect("http://localhost:5173");
-// 		}
-// 	})
-// })
+app.get("/protected", auth, (req, res) => {
+	res.send("Protected");
+});
 
 app.listen(4000, async () => {
 	console.log("Server has started");
