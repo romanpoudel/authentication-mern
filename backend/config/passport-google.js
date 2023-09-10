@@ -9,7 +9,6 @@ passport.use(
 			clientID: process.env.GOOGLE_CLIENT_ID,
 			clientSecret: process.env.GOOGLE_CLIENT_SECRET,
 			callbackURL: "http://localhost:4000/auth/google/redirect",
-			prompt: "select_account",
 		},
 		function (accessToken, refreshToken, profile, done) {
 			userModel.findOne({ email: profile._json.email }).then((currentUser) => {
@@ -34,10 +33,11 @@ passport.use(
 );
 
 passport.serializeUser(function (user, done) {
+	console.log("serialized id: ",user.id)
 	done(null, user.id);
 });
 
 passport.deserializeUser(function (id, done) {
+	console.log("Deserialized id: ",id)
 	userModel.findById(id).then(user=>done(null,user))
-	console.log(id)
 });

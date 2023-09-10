@@ -27,7 +27,7 @@ app.use(
 		secret: process.env.SESSION_SECRET,
 		resave: false,
 		saveUninitialized: true,
-		cookie: { secure: false },
+		cookie: { secure: false },//if true it only sends cookie over https
 	})
 );
 app.use(passport.initialize());
@@ -41,21 +41,16 @@ app.use("/signup", signupRouter);
 app.use("/refresh", refreshRouter);
 app.use("/auth", googleRouter);
 
-// app.get("/auth", auth, (req, res) => {
-// 	//you can access value req.user set from middleware
-// 	console.log(req.user);
-// 	res.status(200).json({message:"authenticated",user:req.user});
+
+// const validate = (req, res, next) => {
+// 	req.user ? next() : res.sendStatus(401);
+// };
+// app.get("/profile", validate, (req, res) => {
+// 	res.send("Profile");
 // });
 
-const validate = (req, res, next) => {
-	req.user ? next() : res.sendStatus(401);
-};
-app.get("/profile", validate, (req, res) => {
-	res.send("Profile");
-});
-
 app.get("/protected", auth, (req, res) => {
-	res.send("Protected");
+	res.status(200).json("Protected");
 });
 
 app.listen(4000, async () => {

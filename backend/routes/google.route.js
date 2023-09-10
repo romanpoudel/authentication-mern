@@ -7,12 +7,13 @@ googleRouter.get(
 	"/google",
 	passport.authenticate("google", {
 		scope: ["profile", "email"],
+		prompt: "select_account",
 	})
 );
 
 googleRouter.get(
 	"/google/redirect",
-	passport.authenticate("google", {successRedirect:"http://localhost:5173",failureRedirect: "/login" })
+	passport.authenticate("google", {successRedirect:"http://localhost:5173/",failureRedirect: "http://localhost:5173/login" })
 );
 
 export default googleRouter

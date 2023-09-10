@@ -35,18 +35,18 @@ export default class AuthController {
 			});
 			//cookie section
 			const options = {
-				expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
+				expires: new Date(Date.now() + 60 * 1000),
 				httpOnly: true,
 			};
 			const accessToken = jwt.sign(
 				{ id: response._id, email },
 				process.env.JWT_SECRET,
-				{ expiresIn: "1h" }
+				{ expiresIn: "15s" }
 			);
 			const refreshToken = jwt.sign(
 				{ id: response._id, email },
 				process.env.JWT_SECRET,
-				{ expiresIn: "1d" }
+				{ expiresIn: "1m" }
 			);
 			//this sets only for frontend not in db
 			response.token = accessToken;
@@ -85,7 +85,7 @@ export default class AuthController {
 				{ id: user._id },
 				process.env.JWT_SECRET,
 				{
-					expiresIn: "1h",
+					expiresIn: "15s",
 				}
 			);
 
@@ -93,7 +93,7 @@ export default class AuthController {
 			const refreshToken = jwt.sign(
 				{ id: user._id },
 				process.env.JWT_SECRET,
-				{ expiresIn: "1d" }
+				{ expiresIn: "1m" }
 			);
 
 			user.token = accessToken;
@@ -101,7 +101,7 @@ export default class AuthController {
 
 			//cookie section
 			const options = {
-				expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
+				expires: new Date(Date.now() + 60 * 1000),
 				httpOnly: true,
 				sameSite: "strict",
 			};
@@ -124,6 +124,12 @@ export default class AuthController {
 	}
 
 	async logoutController(req, res) {
+		//google logout
+		if(req.user){
+			req.logout();
+			return res.redirect("/");
+		}
+
 		try {
 			// Clear the user's token or session here
 			// For example, if you're using JWT, you can set an empty token
@@ -138,6 +144,11 @@ export default class AuthController {
 				.cookie("refreshToken", "", options)
 				// .removeHeader("accessToken") it has to be done separately before sending main response
 				.json({ success: true, message: "Logged out successfully" });
+
+			//write a logout code for passsport js
+			// req.logout();
+			// res.redirect("/");
+
 		} catch (error) {
 			console.error(error);
 			res.status(500).json({
@@ -179,7 +190,7 @@ export default class AuthController {
 				{ id: user._id },
 				process.env.JWT_SECRET,
 				{
-					expiresIn: "1h",
+					expiresIn: "15s",
 				}
 			);
 
@@ -188,7 +199,7 @@ export default class AuthController {
 				success: true,
 				token: newToken,
 				user,
-				message: "Authentication successful",
+				message: "Refresh successful",
 			});
 		} catch (error) {
 			console.error(error);

@@ -32,7 +32,7 @@ const Login = () => {
 					"Content-Type": "application/json",
 				},
 				data,
-				withCredentials: true,
+				credentials: true,
 			});
       console.log(response);
 

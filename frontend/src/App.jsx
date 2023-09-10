@@ -6,6 +6,45 @@ import Home from "./pages/Home";
 import ProtectedRoute from "./ProtectedRoute";
 import { useEffect, useState } from "react";
 import jwt_decode from "jwt-decode";
+// import api from "./api/config";
+
+//remail refresh token implementation
+// const refreshToken = async () => {
+//   try {
+//     const response = await api("/refresh_token", {
+//       method: "GET",
+//       credentials: true,
+//     });
+//     console.log(response);
+//     if (response.data.success) {
+//       toast.success("Refresh Successful");
+//       localStorage.setItem("token", response.data.token);
+//       setTimeout(() => {
+//         navigate("/");
+//       }, 100);
+//       reset();
+//     } else {
+//       toast.error("Invalid Credentials");
+//     }
+//   } catch (err) {
+//     console.log(err);
+//     const errors = [
+//       {
+//         name: "email",
+//         type: err.response.status,
+//         message: err.response.data.message,
+//       },
+//       {
+//         name: "password",
+//         type: err.response.status,
+//         message: err.response.data.message,
+//       },
+//     ];
+//     errors.forEach(({ name, type, message }) => {
+//       setError(name, { type, message });
+//     });
+//   }
+// };
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
