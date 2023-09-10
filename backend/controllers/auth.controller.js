@@ -41,12 +41,12 @@ export default class AuthController {
 			const accessToken = jwt.sign(
 				{ id: response._id, email },
 				process.env.JWT_SECRET,
-				{ expiresIn: "15s" }
+				{ expiresIn: "1m" }
 			);
 			const refreshToken = jwt.sign(
 				{ id: response._id, email },
 				process.env.JWT_SECRET,
-				{ expiresIn: "1m" }
+				{ expiresIn: "5m" }
 			);
 			//this sets only for frontend not in db
 			response.token = accessToken;
@@ -85,7 +85,7 @@ export default class AuthController {
 				{ id: user._id },
 				process.env.JWT_SECRET,
 				{
-					expiresIn: "15s",
+					expiresIn: "1m",
 				}
 			);
 
@@ -93,7 +93,7 @@ export default class AuthController {
 			const refreshToken = jwt.sign(
 				{ id: user._id },
 				process.env.JWT_SECRET,
-				{ expiresIn: "1m" }
+				{ expiresIn: "5m" }
 			);
 
 			user.token = accessToken;
@@ -190,7 +190,7 @@ export default class AuthController {
 				{ id: user._id },
 				process.env.JWT_SECRET,
 				{
-					expiresIn: "15s",
+					expiresIn: "1m",
 				}
 			);
 

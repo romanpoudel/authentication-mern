@@ -49,8 +49,8 @@ app.use("/auth", googleRouter);
 // 	res.send("Profile");
 // });
 
-app.get("/protected", auth, (req, res) => {
-	res.status(200).json("Protected");
+app.get("/authenticated", auth, (req, res) => {
+	res.status(200).json({success: true, message: "Authenticated"});
 });
 
 app.listen(4000, async () => {

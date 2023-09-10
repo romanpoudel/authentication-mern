@@ -32,7 +32,7 @@ const Login = () => {
 					"Content-Type": "application/json",
 				},
 				data,
-				credentials: true,
+				withCredentials: true,
 			});
       console.log(response);
 
@@ -44,6 +44,7 @@ const Login = () => {
         localStorage.setItem("token", response.data.token);
         setTimeout(() => {
           navigate("/");
+          // window.location.reload();
         }, 100);
         reset();
       } else {

@@ -34,6 +34,7 @@ const Signup = () => {
 				"Content-Type": "application/json",
 			},
 			data,
+			withCredentials: true,
 		};
 
 		try {
