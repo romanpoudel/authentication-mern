@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import {toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 import { authenticate } from "../features/authStatus/authSlice";
+import { deleteCookie } from "../utils/cookie";
 
 // import { deleteCookie } from "../utils/cookie";
 
@@ -18,6 +19,7 @@ const Home = () => {
 			if(response.data.success){
 				dispatch(authenticate(false))
 				localStorage.removeItem("token")
+				deleteCookie("connect.sid")
 				toast.success("Logout successful")
 				navigate("/login")
 			}
