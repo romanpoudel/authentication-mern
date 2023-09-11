@@ -27,7 +27,7 @@ app.use(
 		secret: process.env.SESSION_SECRET,
 		resave: false,
 		saveUninitialized: true,
-		cookie: { secure: false },//if true it only sends cookie over https
+		cookie: { httpOnly: false, secure: false }, //if true it only sends cookie over https
 	})
 );
 app.use(passport.initialize());
@@ -41,7 +41,6 @@ app.use("/signup", signupRouter);
 app.use("/refresh", refreshRouter);
 app.use("/auth", googleRouter);
 
-
 // const validate = (req, res, next) => {
 // 	req.user ? next() : res.sendStatus(401);
 // };
@@ -50,7 +49,7 @@ app.use("/auth", googleRouter);
 // });
 
 app.get("/authenticated", auth, (req, res) => {
-	res.status(200).json({success: true, message: "Authenticated"});
+	res.status(200).json({ success: true, message: "Authenticated" });
 });
 
 app.listen(4000, async () => {

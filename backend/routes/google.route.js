@@ -13,7 +13,10 @@ googleRouter.get(
 
 googleRouter.get(
 	"/google/redirect",
-	passport.authenticate("google", {successRedirect:"http://localhost:5173/",failureRedirect: "http://localhost:5173/login" })
+	passport.authenticate("google", {failureRedirect: "http://localhost:5173/login" }),(req,res)=>{
+		console.log("successfull")
+		res.redirect("http://localhost:5173/")
+	}
 );
 
 export default googleRouter

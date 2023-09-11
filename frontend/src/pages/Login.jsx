@@ -4,6 +4,8 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import api from "../api/config.js";
 import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { authenticate } from "../features/authStatus/authSlice";
 
 // import { setCookie } from "../utils/cookie.js";
 
@@ -12,6 +14,7 @@ const schema = yup.object().shape({
   password: yup.string().min(8).max(32).required(),
 });
 const Login = () => {
+  const dispatch = useDispatch();
   const {
     register,
     handleSubmit,
@@ -42,6 +45,7 @@ const Login = () => {
       if (response.data.success) {
         toast.success("Login Successful");
         localStorage.setItem("token", response.data.token);
+        dispatch(authenticate(true));
         setTimeout(() => {
           navigate("/");
           // window.location.reload();

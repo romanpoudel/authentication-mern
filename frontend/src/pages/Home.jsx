@@ -1,10 +1,13 @@
 import api from "../api/config";
 import { useNavigate } from "react-router-dom";
 import {toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { authenticate } from "../features/authStatus/authSlice";
 
 // import { deleteCookie } from "../utils/cookie";
 
 const Home = () => {
+	const dispatch = useDispatch()
 	const navigate=useNavigate()
 
 	const handleLogout = async () => {
@@ -12,9 +15,12 @@ const Home = () => {
 			const response = await api("/logout");
 			console.log(response);
 			// deleteCookie("token")
-			localStorage.removeItem("token")
-			toast.success("Logout successful")
-			navigate("/login")
+			if(response.data.success){
+				dispatch(authenticate(false))
+				localStorage.removeItem("token")
+				toast.success("Logout successful")
+				navigate("/login")
+			}
 		}catch(err){
 			console.log(err)
 		}
